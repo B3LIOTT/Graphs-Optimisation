@@ -43,7 +43,7 @@ class Graph:
                         if vals[i][j] == 3:
                             self.t = i*self.shape[1]+j
 
-                        node = Node(name=f"{i * self.shape[1] + j}", euclideanIndex=(i, j), nodeType=vals[i][j],
+                        node = Node(name=f"{i * self.shape[1] + j}", id=i * self.shape[1] + j, euclideanIndex=(i, j), nodeType=vals[i][j],
                                     neighbors={})
 
                         if vals[i][j] != 0:

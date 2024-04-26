@@ -1,4 +1,6 @@
 from graph import Graph
+from math import sqrt, pow
+import time
 
 
 class A_STAR:
@@ -11,52 +13,97 @@ class A_STAR:
         :param G: graph
         """
         self.G = G
+        self.start = G.s
+        self.goal = G.t
         self.open_list = []
-        self.closed_list = []
+        self.cameFrom = {}
         self.path = []
-        self.start = None
-        self.goal = None
         self.current = None
         self.cost = 0
         self.heuristic = 0
+        self.start_time = None
+        self.htype = 2
 
-    def set_start(self, start):
-        self.start = start
+    def h(self, node):
+        """
+        :param node: noeud actuel
+        :return: cout entre le noeud node et l'arrivée t
+        """
+        if self.htype == 0:  # Dijkstra
+            return 0
 
-    def set_goal(self, goal):
-        self.goal = goal
+        elif self.htype == 1:  # Euclidien
+            current = self.G.nodes[node].euclideanIndex
+            goal = self.G.nodes[self.G.t].euclideanIndex
+            return sqrt(pow(goal[0] - current[0], 2) + pow(goal[1] - current[1], 2))
 
-    def get_neighbors(self):
-        return self.G.edges[self.current]
+    def g(self, node):
+        """
+        :param node: noeud actuel
+        :return: cout entre le noeud node et le depart s
+        """
+        current = self.G.nodes[node].euclideanIndex
+        start = self.G.nodes[self.G.s].euclideanIndex
+        return sqrt(pow(start[0]-current[0], 2) + pow(start[1]-current[1], 2))
 
-    def get_cost(self, neighbor):
-        return self.G.edges[self.current][neighbor]
+    def f(self, node):
+        return self.g(node) + self.h(node)
 
-    def get_heuristic(self, neighbor):
-        return self.G.edges[neighbor][self.goal]
+    def getBestNode(self):
+        return max(self.open_list, key=lambda x:self.f(x))
 
-    def get_total_cost(self, neighbor):
-        return self.get_cost(neighbor) + self.get_heuristic(neighbor)
+    def reconstructPath(self, node):
+        """
+        :param node: noeud actuel
+        :return: chemin le plus court
+        """
+        print("Execution time: ", time.perf_counter()-self.start_time)
+        path = [node]
+        while node in self.cameFrom.keys():
+            node = self.cameFrom[node]
+            path.append(node)
 
-    def get_path(self):
-        return self.path
+        return path
+
+    def d(self, current, neighbor):
+        neighbors = self.G.nodes[current].neighbors
+        if neighbor in neighbors:
+            return neighbors[neighbor]
+        else:
+            print(f"Erreur: {neighbor} n'est pas un voisin de {current}")
+            return float("inf")
 
     def search(self):
+        self.start_time = time.perf_counter()
+
         self.open_list.append(self.start)
 
-        while self.open_list:
-            self.current = self.open_list[0]
+        g = {}
+        for node in self.G.nodes:
+            g[node.id] = float("inf")
+        g[self.start] = 0
 
-            for neighbor in self.get_neighbors():
-                if neighbor not in self.closed_list:
+        f = {}
+        for node in self.G.nodes:
+            f[node.id] = float("inf")
+        f[self.start] = self.h(self.start)
+
+        while len(self.open_list) > 0:
+            current = self.getBestNode()
+
+            if current == self.goal:
+                return self.reconstructPath(current)
+
+            self.open_list.remove(current)
+
+            for neighbor in self.G.nodes[current].neighbors:
+                tentative_gScore = g[current] + self.d(current, neighbor)
+                if tentative_gScore < g[neighbor]:
+                    self.cameFrom[neighbor] = current
+                    g[neighbor] = tentative_gScore
+                    f[neighbor] = tentative_gScore + self.h(neighbor)
                     if neighbor not in self.open_list:
                         self.open_list.append(neighbor)
 
-            self.open_list.remove(self.current)
-            self.closed_list.append(self.current)
-
-            if self.current == self.goal:
-                break
-
-        self.path = self.closed_list
-
+        print("A*: FAILURE")
+        return None
