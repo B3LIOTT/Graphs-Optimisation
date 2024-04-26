@@ -35,7 +35,6 @@ class Graph:
                     print("Invalid file format")
 
                 # create the nodes
-                print("File values: ", vals, '\n')
                 for i in range(self.shape[0]):
                     for j in range(self.shape[1]):
                         if vals[i][j] == 2:

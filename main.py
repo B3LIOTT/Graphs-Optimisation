@@ -9,19 +9,21 @@ def a_star_solve(G: Graph):
     res = a_star.search()
     res_str = [str(n) for n in res]
     G.add_solution(res_str)
+    save_res(f"a-star_{filename}", res_str)
 
 
 def cplex_solve(G: Graph):
     spc = SPC(name='cplex', G=G)
     res = spc.solve()
     G.add_solution(res[1])
-    save_res(f"A-start_{filename}", res)
+    save_res(f"cplex_{filename}", res[1])
 
 
 def save_res(filename: str, res):
     try:
-        with open(f'solutions/sol_{filename}.txt', 'w') as f:
-            f.write(f'{res[0]}')
+        with open(f'solutions/sol_{filename}', 'w') as f:
+            for r in res:
+                f.write(f'{r}\n')
 
     except Exception as e:
         print('Error while saving solution: ', e)

@@ -22,7 +22,7 @@ class A_STAR:
         self.cost = 0
         self.heuristic = 0
         self.start_time = None
-        self.htype = 2
+        self.htype = 1
 
     def h(self, node):
         """

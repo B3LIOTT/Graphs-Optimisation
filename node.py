@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, name: int, id: int, euclideanIndex: (int, int), nodeType: int, neighbors: dict):
+    def __init__(self, name: str, id: int, euclideanIndex: (int, int), nodeType: int, neighbors: dict):
         """
         :param name: nom du noeud
         :param nodeType: type du noeud (0: obstacle, 1: traversable, 2: depart, 3: arrivee)
