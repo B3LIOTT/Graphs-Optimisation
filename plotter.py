@@ -20,7 +20,12 @@ def plot(G: Graph):
     colors = []
     for node in nxG.nodes:
         if node in G.shortest_path:
-            colors.append(SP)
+            if G.nodes[int(node)].nodeType == 2:
+                colors.append(START)
+            elif G.nodes[int(node)].nodeType == 3:
+                colors.append(GOAL)
+            else:
+                colors.append(SP)
         elif G.nodes[int(node)].nodeType == 0:
             colors.append(OBSTACLE)
         else:

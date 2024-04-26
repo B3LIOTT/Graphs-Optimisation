@@ -13,8 +13,7 @@ def cplex_solve(G: Graph):
     spc = SPC(name='cplex', G=G)
     res = spc.solve()
 
-    print("Solution path: ", res[1])
-    G.add_solution(res[2])
+    G.add_solution(res[1])
     save_res(filename, res)
 
 

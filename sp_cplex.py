@@ -44,28 +44,23 @@ class SHORT_PATH_CPLEX:
             )
         )
 
-    def solve(self):
+    def solve(self, logging=True):
         """
         :return: solution cplex, string du meilleur chemin, liste des noeuds du plus court chemin
         """
-        self.model.solve(log_output=True)
+        self.model.solve(log_output=logging)
         x = self.model.solution
         try:
-            str_res = ""
             list_res = []
             i = 0
             for k, v in x.as_dict().items():
-                if i == 0:
-                    str_res += f"{k.name.split('_')[2]} -> "
+                if k.name.split('_')[1] not in list_res:
+                    list_res.append(k.name.split('_')[1])
+
+                if k.name.split('_')[2] not in list_res:
                     list_res.append(k.name.split('_')[2])
 
-                str_res += f"{k.name.split('_')[1]}"
-                list_res.append(k.name.split('_')[1])
-                i += 1
-                if i < len(x.as_dict()):
-                    str_res += " -> "
-
-            return x, str_res, list_res
+            return x, list_res
         except AttributeError:
             print("No solution found")
             return None
