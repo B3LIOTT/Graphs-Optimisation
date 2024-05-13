@@ -37,7 +37,11 @@ class A_STAR:
             goal = self.G.nodes[self.G.t].euclideanIndex
             return sqrt(pow(goal[0] - current[0], 2) + pow(goal[1] - current[1], 2))
 
-    def g(self, node):
+        elif self.htype == 2:  # Manhattan
+            return abs(self.G.nodes[node].euclideanIndex[0] - self.G.nodes[self.G.t].euclideanIndex[0]) + abs(
+                self.G.nodes[node].euclideanIndex[1] - self.G.nodes[self.G.t].euclideanIndex[1])
+
+    def g_e(self, node):
         """
         :param node: noeud actuel
         :return: cout entre le noeud node et le depart s
@@ -45,6 +49,15 @@ class A_STAR:
         current = self.G.nodes[node].euclideanIndex
         start = self.G.nodes[self.G.s].euclideanIndex
         return sqrt(pow(start[0]-current[0], 2) + pow(start[1]-current[1], 2))
+
+    def g(self, node):
+        """
+        :param node: noeud actuel
+        :return: cout entre le noeud node et le depart s
+        """
+        current = self.G.nodes[node].euclideanIndex
+        start = self.G.nodes[self.G.s].euclideanIndex
+        return abs(start[0]-current[0]) + abs(start[1]-current[1])
 
     def f(self, node):
         return self.g(node) + self.h(node)
@@ -76,7 +89,7 @@ class A_STAR:
     def search(self):
         self.start_time = time.perf_counter()
 
-        self.open_list.append(self.start)
+        self.open_list.append(self.start)  # TODO: heapq
 
         g = {}
         for node in self.G.nodes:
