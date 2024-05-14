@@ -1,6 +1,7 @@
 from graph import Graph
 from math import sqrt, pow
 import time
+import heapq
 
 
 class A_STAR:
@@ -22,38 +23,32 @@ class A_STAR:
         self.cost = 0
         self.heuristic = 0
         self.start_time = None
-        self.htype = 1
+        self.h_type = 1
 
     def h(self, node):
         """
         :param node: noeud actuel
         :return: cout entre le noeud node et l'arrivée t
         """
-        if self.htype == 0:  # Dijkstra
+        if self.h_type == 0:
             return 0
+        current = self.G.nodes[node].euclideanIndex
+        goal = self.G.nodes[self.G.t].euclideanIndex
+        return sqrt(pow(goal[0] - current[0], 2) + pow(goal[1] - current[1], 2))
 
-        elif self.htype == 1:  # Euclidien
-            current = self.G.nodes[node].euclideanIndex
-            goal = self.G.nodes[self.G.t].euclideanIndex
-            return sqrt(pow(goal[0] - current[0], 2) + pow(goal[1] - current[1], 2))
-
-        elif self.htype == 2:  # Manhattan
-            return abs(self.G.nodes[node].euclideanIndex[0] - self.G.nodes[self.G.t].euclideanIndex[0]) + abs(
-                self.G.nodes[node].euclideanIndex[1] - self.G.nodes[self.G.t].euclideanIndex[1])
-
-    def g_e(self, node):
+    def g(self, node):
         """
         :param node: noeud actuel
-        :return: cout entre le noeud node et le depart s
+        :return: cout entre le noeud node et le depart s (euclidien)
         """
         current = self.G.nodes[node].euclideanIndex
         start = self.G.nodes[self.G.s].euclideanIndex
         return sqrt(pow(start[0]-current[0], 2) + pow(start[1]-current[1], 2))
 
-    def g(self, node):
+    def g_manhattan(self, node):
         """
         :param node: noeud actuel
-        :return: cout entre le noeud node et le depart s
+        :return: cout entre le noeud node et le depart s (manhattan)
         """
         current = self.G.nodes[node].euclideanIndex
         start = self.G.nodes[self.G.s].euclideanIndex
@@ -61,9 +56,6 @@ class A_STAR:
 
     def f(self, node):
         return self.g(node) + self.h(node)
-
-    def getBestNode(self):
-        return max(self.open_list, key=lambda x:self.f(x))
 
     def reconstructPath(self, node):
         """
@@ -89,7 +81,7 @@ class A_STAR:
     def search(self):
         self.start_time = time.perf_counter()
 
-        self.open_list.append(self.start)  # TODO: heapq
+        heapq.heappush(self.open_list, (self.h(self.start), self.start))
 
         g = {}
         for node in self.G.nodes:
@@ -101,13 +93,11 @@ class A_STAR:
             f[node.id] = float("inf")
         f[self.start] = self.h(self.start)
 
-        while len(self.open_list) > 0:
-            current = self.getBestNode()
+        while self.open_list:
+            _, current = heapq.heappop(self.open_list)
 
             if current == self.goal:
                 return self.reconstructPath(current)
-
-            self.open_list.remove(current)
 
             for neighbor in self.G.nodes[current].neighbors:
                 tentative_gScore = g[current] + self.d(current, neighbor)
@@ -115,8 +105,7 @@ class A_STAR:
                     self.cameFrom[neighbor] = current
                     g[neighbor] = tentative_gScore
                     f[neighbor] = tentative_gScore + self.h(neighbor)
-                    if neighbor not in self.open_list:
-                        self.open_list.append(neighbor)
+                    heapq.heappush(self.open_list, (f[neighbor], neighbor))
 
         print("A*: FAILURE")
         return None

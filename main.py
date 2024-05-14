@@ -7,6 +7,9 @@ import sys
 def a_star_solve(G: Graph):
     a_star = A_STAR(G)
     res = a_star.search()
+    if res is None:
+        print("No solution found")
+        return
     res_str = [str(n) for n in res]
     G.add_solution(res_str)
     save_res(f"a-star_{filename}", res_str)
@@ -39,8 +42,8 @@ if __name__ == '__main__':
     filename = sys.argv[2]
     graph = Graph(f'graphes/{filename}')
 
-    for node in graph.nodes:
-        print(node)
+    #for node in graph.nodes:
+        #print(node)
 
     algType = int(sys.argv[1])
 
