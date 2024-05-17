@@ -3,23 +3,27 @@ import sys
 
 
 def generateGraph1(proba: float, size: tuple[int, int]):
+    try:
+        with open(f"graphes/graph_{proba}_{size[0]}_{size[1]}.txt", 'w') as f:
+            f.write(f"{size[0]} {size[1]}\n")
+            s = (random.randint(0, size[0] - 1), random.randint(0, size[1] - 1))
+            t = (random.randint(0, size[0] - 1), random.randint(0, size[1] - 1))
+            for i in range(size[0]):
+                for j in range(size[1]):
+                    if (i, j) == s:
+                        f.write("2 ")
+                    elif (i, j) == t:
+                        f.write("3 ")
 
-    with open(f"graphes/graph_{proba}_{size[0]}_{size[1]}.txt", 'w') as f:
-        f.write(f"{size[0]} {size[1]}\n")
-        s = (random.randint(0, size[0] - 1), random.randint(0, size[1] - 1))
-        t = (random.randint(0, size[0] - 1), random.randint(0, size[1] - 1))
-        for i in range(size[0]):
-            for j in range(size[1]):
-                if (i, j) == s:
-                    f.write("2 ")
-                elif (i, j) == t:
-                    f.write("3 ")
+                    elif random.randint(0, 100) < proba*100:
+                        f.write("1 ")
+                    else:
+                        f.write("0 ")
+                f.write("\n")
 
-                elif random.randint(0, 100) < proba*100:
-                    f.write("1 ")
-                else:
-                    f.write("0 ")
-            f.write("\n")
+    except Exception as e:
+        print("Error while generating the graph: ", e)
+        sys.exit(1)
 
 
 def generateGraph2():

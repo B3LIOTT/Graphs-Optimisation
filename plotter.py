@@ -1,6 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from graph import Graph
+from graph2 import Graph
 from constants import *
 import sys
 
