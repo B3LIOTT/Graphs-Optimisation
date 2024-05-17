@@ -27,12 +27,18 @@ def generateGraph2():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 4:
-        print("Usage: python graph_generator.py <proba> <size x> <size y>")
+    if len(sys.argv) != 5:
+        print("Usage to generate a graph for the shortest path problem: python graph_generator.py 1 <proba> <size x> <size y>")
+        print("Usage to generate a graph for the traveling salesman problem: python graph_generator.py 2 <proba> <nodes number> <edges number>")
         sys.exit(1)
 
-    proba = float(sys.argv[1])
-    size = (int(sys.argv[2]), int(sys.argv[3]))
-
-    generateGraph1(proba=proba, size=size)
+    if int(sys.argv[1]) == 1:
+        proba = float(sys.argv[2])
+        size = (int(sys.argv[3]), int(sys.argv[4]))
+        generateGraph1(proba=proba, size=size)
+    else:
+        proba = float(sys.argv[2])
+        nodes_number = int(sys.argv[3])
+        edges_number = int(sys.argv[4])
+        generateGraph2()
 

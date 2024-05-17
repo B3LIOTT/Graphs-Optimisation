@@ -26,8 +26,6 @@ class Graph2:
                 try:
                     # get the shape of the graph in the first line
                     self.shape = tuple(map(int, lines[0].split(" ")))
-                    if self.shape[0] > 500 or self.shape[1] > 500:
-                        raise ValueError("The size of the graph is too big")
 
                     # get the values
                     vals = [[int(val) for val in line.strip().split(" ")] for line in lines[1:]]

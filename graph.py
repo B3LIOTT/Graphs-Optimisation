@@ -14,7 +14,8 @@ class Graph:
         """
         self.nodes = []
         self.edges = []
-        self.shape = ()
+        self.edges_number = None
+        self.node_number = None
         self.s = None
         self.t = None
         self.shortest_path = []
@@ -23,44 +24,14 @@ class Graph:
             with open(filename, 'r') as f:
                 lines = f.readlines()
 
-                try:
-                    # get the shape of the graph in the first line
-                    self.shape = tuple(map(int, lines[0].split(" ")))
-                    if self.shape[0] > 500 or self.shape[1] > 500:
-                        raise ValueError("The size of the graph is too big")
+                self.nodes_number, self.edges_number = tuple(map(int, lines[0].split(" ")))
 
-                    # get the values
-                    vals = [[int(val) for val in line.strip().split(" ")] for line in lines[1:]]
+                for k in range(self.edges_number):
+                    i, j = tuple(map(int, lines[k+1].split(" ")))
+                    self.edge(edge=(i, j))
 
-                except ValueError:
-                    print("Invalid file format")
-
-                # create the nodes
-                for i in range(self.shape[0]):
-                    for j in range(self.shape[1]):
-                        if vals[i][j] == 2:
-                            self.s = i*self.shape[1]+j
-                        if vals[i][j] == 3:
-                            self.t = i*self.shape[1]+j
-
-                        node = Node(name=f"{i * self.shape[1] + j}", id=i * self.shape[1] + j, euclideanIndex=(i, j), nodeType=vals[i][j],
-                                    neighbors={})
-
-                        if vals[i][j] != 0:
-                            # get neighbors
-                            directions = [
-                                (-1, 0, 1), (1, 0, 1), (0, -1, 1), (0, 1, 1),
-                                (-1, -1, sqrt(2)), (-1, 1, sqrt(2)), (1, -1, sqrt(2)), (1, 1, sqrt(2))
-                            ]
-                            for di, dj, distance in directions:
-                                ni, nj = i + di, j + dj
-                                if 0 <= ni < self.shape[0] and 0 <= nj < self.shape[1] and vals[ni][nj] != 0:
-                                    neighbor_id = ni * self.shape[1] + nj
-                                    node.add_neighbor(neighbor=neighbor_id, distance=distance)
-                                    self.edge(edge=(neighbor_id, node.id))
-
-                        self.nodes.append(node)
-
+        except ValueError:
+            print("Invalid file format")
         except FileNotFoundError:
             print(f"File {filename} not found")
 
