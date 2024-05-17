@@ -26,8 +26,28 @@ def generateGraph1(proba: float, size: tuple[int, int]):
         sys.exit(1)
 
 
-def generateGraph2():
-    raise NotImplementedError
+def generateGraph2(proba: float, nodes_number: int, edges_number: int):
+    #     La
+    # première ligne contient le nombre de sommets du graphe et le nombre d’arêtes, séparés par un espace.
+    # On a ensuite autant de lignes qu’il y a d’arêtes, avec sur chaque ligne les numéros des deux sommets
+    # incidents à l’arête et le coût de cette arête, avec un espace entre chaque valeur. Les sommets sont
+    # numérotés à partir de 0.
+
+    try :
+        with open(f"graphes/graph_{proba}_{nodes_number}_{edges_number}.txt", 'w') as f:
+            f.write(f"{nodes_number} {edges_number}\n")
+            for i in range(edges_number):
+                node1 = random.randint(0, nodes_number - 1)
+                node2 = random.randint(0, nodes_number - 1)
+                while node1 == node2:
+                    node2 = random.randint(0, nodes_number - 1)
+                cost = random.randint(1, 100)
+                f.write(f"{node1} {node2} {cost}\n")
+
+    except Exception as e:
+        print("Error while generating the graph: ", e)
+        sys.exit(1)
+
 
 
 if __name__ == '__main__':
@@ -44,5 +64,5 @@ if __name__ == '__main__':
         proba = float(sys.argv[2])
         nodes_number = int(sys.argv[3])
         edges_number = int(sys.argv[4])
-        generateGraph2()
+        generateGraph2(proba=proba, nodes_number=nodes_number, edges_number=edges_number)
 
