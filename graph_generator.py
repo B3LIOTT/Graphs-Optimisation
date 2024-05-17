@@ -27,12 +27,6 @@ def generateGraph1(proba: float, size: tuple[int, int]):
 
 
 def generateGraph2(proba: float, nodes_number: int, edges_number: int):
-    #     La
-    # première ligne contient le nombre de sommets du graphe et le nombre d’arêtes, séparés par un espace.
-    # On a ensuite autant de lignes qu’il y a d’arêtes, avec sur chaque ligne les numéros des deux sommets
-    # incidents à l’arête et le coût de cette arête, avec un espace entre chaque valeur. Les sommets sont
-    # numérotés à partir de 0.
-
     try :
         with open(f"graphes/graph_{proba}_{nodes_number}_{edges_number}.txt", 'w') as f:
             f.write(f"{nodes_number} {edges_number}\n")
