@@ -7,9 +7,10 @@ class Graph:
     Classe représentant un graphe (dans ce TP on considère des graphes non orientés)
     """
 
-    def __init__(self, filename: str):
+    def __init__(self, filename: str, graphType: int = 0):
         """
         :param filename: nom du fichier contenant la description du graphe
+        :param graphType: type du graphe (0: graphe pour l'exercice 1, 1: graphe pour l'exercice 2)
         """
         self.nodes = []
         self.edges = []
@@ -47,37 +48,16 @@ class Graph:
 
                         if vals[i][j] != 0:
                             # get neighbors
-                            if i > 0 and vals[i - 1][j] != 0:
-                                node.add_neighbor(neighbor=(i - 1) * self.shape[1] + j, distance=1)
-                                self.add_egde(((i - 1) * self.shape[1] + j, i * self.shape[1] + j))
-
-                            if i < self.shape[0] - 1 and vals[i + 1][j] != 0:
-                                node.add_neighbor(neighbor=(i + 1) * self.shape[1] + j, distance=1)
-                                self.add_egde(((i + 1) * self.shape[1] + j, i * self.shape[1] + j))
-
-                            if j > 0 and vals[i][j - 1] != 0:
-                                node.add_neighbor(neighbor=i * self.shape[1] + j - 1, distance=1)
-                                self.add_egde((i * self.shape[1] + j - 1, i * self.shape[1] + j))
-
-                            if j < self.shape[1] - 1 and vals[i][j + 1] != 0:
-                                node.add_neighbor(neighbor=i * self.shape[1] + j + 1, distance=1)
-                                self.add_egde((i * self.shape[1] + j + 1, i * self.shape[1] + j))
-
-                            if i > 0 and j > 0 and vals[i - 1][j - 1] != 0:
-                                node.add_neighbor(neighbor=(i - 1) * self.shape[1] + j - 1, distance=sqrt(2))
-                                self.add_egde(((i - 1) * self.shape[1] + j - 1, i * self.shape[1] + j))
-
-                            if i > 0 and j < self.shape[1] - 1 and vals[i - 1][j + 1] != 0:
-                                node.add_neighbor(neighbor=(i - 1) * self.shape[1] + j + 1, distance=sqrt(2))
-                                self.add_egde(((i - 1) * self.shape[1] + j + 1, i * self.shape[1] + j))
-
-                            if i < self.shape[0] - 1 and j > 0 and vals[i + 1][j - 1] != 0:
-                                node.add_neighbor(neighbor=(i + 1) * self.shape[1] + j - 1, distance=sqrt(2))
-                                self.add_egde(((i + 1) * self.shape[1] + j - 1, i * self.shape[1] + j))
-
-                            if i < self.shape[0] - 1 and j < self.shape[1] - 1 and vals[i + 1][j + 1] != 0:
-                                node.add_neighbor(neighbor=(i + 1) * self.shape[1] + j + 1, distance=sqrt(2))
-                                self.add_egde(((i + 1) * self.shape[1] + j + 1, i * self.shape[1] + j))
+                            directions = [
+                                (-1, 0, 1), (1, 0, 1), (0, -1, 1), (0, 1, 1),
+                                (-1, -1, sqrt(2)), (-1, 1, sqrt(2)), (1, -1, sqrt(2)), (1, 1, sqrt(2))
+                            ]
+                            for di, dj, distance in directions:
+                                ni, nj = i + di, j + dj
+                                if 0 <= ni < self.shape[0] and 0 <= nj < self.shape[1] and vals[ni][nj] != 0:
+                                    neighbor_id = ni * self.shape[1] + nj
+                                    node.add_neighbor(neighbor=neighbor_id, distance=distance)
+                                    self.edge(edge=(neighbor_id, node.id))
 
                         self.nodes.append(node)
 
@@ -90,7 +70,7 @@ class Graph:
     def delete_node(self, node: Node):
         self.nodes.remove(node)
 
-    def add_egde(self, edge: (int, int)):
+    def edge(self, edge: (int, int)):
         self.edges.append(edge)
 
     def delete_egde(self, edge: (int, int)):

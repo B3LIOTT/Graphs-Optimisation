@@ -70,3 +70,4 @@ class SHORT_PATH_CPLEX:
 
     def print_solution(self):
         self.model.print_solution()
+
