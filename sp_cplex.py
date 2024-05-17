@@ -1,5 +1,5 @@
 from docplex.mp.model import Model
-from graph2 import Graph
+from graph import Graph
 
 
 class SHORT_PATH_CPLEX:
