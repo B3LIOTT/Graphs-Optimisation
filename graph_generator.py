@@ -28,7 +28,7 @@ def generateGraph1(proba: float, size: tuple[int, int]):
 
 def generateGraph2(proba: float, nodes_number: int, edges_number: int):
     try :
-        with open(f"graphes/graph_{proba}_{nodes_number}_{edges_number}.txt", 'w') as f:
+        with open(f"graphes2/graph_{proba}_{nodes_number}_{edges_number}.txt", 'w') as f:
             f.write(f"{nodes_number} {edges_number}\n")
             for i in range(edges_number):
                 node1 = random.randint(0, nodes_number - 1)
@@ -41,7 +41,6 @@ def generateGraph2(proba: float, nodes_number: int, edges_number: int):
     except Exception as e:
         print("Error while generating the graph: ", e)
         sys.exit(1)
-
 
 
 if __name__ == '__main__':

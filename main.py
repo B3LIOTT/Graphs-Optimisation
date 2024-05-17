@@ -54,6 +54,9 @@ if __name__ == '__main__':
     for node in graph.nodes:
         print(node)
 
+    graph.plot()
+    exit(0)
+
     algType = int(sys.argv[2])
 
     if algType == 1:
