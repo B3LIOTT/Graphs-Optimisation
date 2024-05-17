@@ -1,5 +1,5 @@
-from graph2 import Graph
-from graph import Graph2
+from graph import Graph
+from graph2 import Graph2
 from sp_cplex import SHORT_PATH_CPLEX as SPC
 from a_star import A_STAR
 import sys
