@@ -33,19 +33,27 @@ def save_res(filename: str, res):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print("Usage: python main.py <alg type> <filename>")
+    if len(sys.argv) != 4:
+        print("Usage: python main.py <exercice> <alg type> <filename>")
+        print("Exercices: 1=Shortest path, 2=Traveling salesman")
         print("Alg types: 1=CPLEX, 2=A*")
-        print("Info: the file should be in the 'graphes' directory.")
+        print("Info: the file should be in the 'graphes' directory for Shortest path, or in 'graphes2' for Traveling salesman.")
         sys.exit(1)
 
-    filename = sys.argv[2]
-    graph = Graph(f'graphes/{filename}')
+    filename = sys.argv[3]
+
+    if int(sys.argv[1]) == 1:
+        graph = Graph(f'graphes/{filename}')
+    elif int(sys.argv[1]) == 2:
+        graph = Graph2(f'graphes2/{filename}')
+    else:
+        print("Exercice unknown (1 or 2)")
+        sys.exit(1)
 
     #for node in graph.nodes:
         #print(node)
 
-    algType = int(sys.argv[1])
+    algType = int(sys.argv[2])
 
     if algType == 1:
         # Résolution du problème avec CPLEX
@@ -56,7 +64,7 @@ if __name__ == '__main__':
         a_star_solve(graph)
 
     else:
-        print("Type d'algorithme non valide (soit 1, soit 2)")
+        print("Invalid algorithm type (1 or 2)")
         sys.exit(1)
 
     # Plot the graph with the solution

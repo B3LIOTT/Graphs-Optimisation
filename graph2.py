@@ -17,7 +17,7 @@ class Graph:
         self.shape = ()
         self.s = None
         self.t = None
-        self.shortest_path = []
+        self.salesman_travel = []
 
         try:
             with open(filename, 'r') as f:
