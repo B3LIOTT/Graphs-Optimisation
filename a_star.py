@@ -1,4 +1,4 @@
-from graph2 import Graph
+from graph import Graph
 from math import sqrt, pow
 import time
 import heapq
