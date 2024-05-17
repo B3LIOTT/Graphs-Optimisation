@@ -27,8 +27,22 @@ class Graph2:
                 self.nodes_number, self.edges_number = tuple(map(int, lines[0].split(" ")))
 
                 for k in range(self.edges_number):
-                    i, j, cost = tuple(map(int, lines[k+1].split(" ")))
-                    self.add_edge(edge=(i, j))
+                    data = lines[k + 1].split(" ")
+                    i, j = (int(data[0]), int(data[1]))
+                    cost = float(data[2])
+                    self.add_edge(edge=(i, j), cost=cost)
+
+                for edge in self.edges:
+                    i, j = edge[0]
+                    if i not in [node.id for node in self.nodes]:
+                        current_node = Node(name=f"{i}", id=i, euclideanIndex=(i, i), nodeType=None, neighbors={})
+                        current_node.add_neighbor(neighbor=j, distance=edge[1])
+                        self.add_node(current_node)
+
+                    if j not in [node.id for node in self.nodes]:
+                        current_node = Node(name=f"{j}", id=j, euclideanIndex=(j, j), nodeType=None, neighbors={})
+                        current_node.add_neighbor(neighbor=i, distance=edge[1])
+                        self.add_node(current_node)
 
         except ValueError:
             print("Invalid file format")
@@ -41,8 +55,8 @@ class Graph2:
     def delete_node(self, node: Node):
         self.nodes.remove(node)
 
-    def add_edge(self, edge: (int, int)):
-        self.edges.append(edge)
+    def add_edge(self, edge: (int, int), cost: float):
+        self.edges.append((edge, cost))
 
     def delete_egde(self, edge: (int, int)):
         self.edges.remove(edge)

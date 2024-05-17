@@ -51,8 +51,8 @@ if __name__ == '__main__':
         print("Exercice unknown (1 or 2)")
         sys.exit(1)
 
-    #for node in graph.nodes:
-        #print(node)
+    for node in graph.nodes:
+        print(node)
 
     algType = int(sys.argv[2])
 
