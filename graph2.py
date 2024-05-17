@@ -2,7 +2,7 @@ from node import Node
 from math import sqrt
 
 
-class Graph:
+class Graph2:
     """
     Classe représentant un graphe (dans ce TP on considère des graphes non orientés)
     """
