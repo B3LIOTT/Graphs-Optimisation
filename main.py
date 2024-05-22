@@ -77,8 +77,7 @@ if __name__ == '__main__':
             # Résolution du problème avec A*
             a_star_solve(graph)
         else:
-            print("Brute force not implemented for exercice 2")
-            sys.exit(1)
+            brute_force_solve(graph)
 
     else:
         print("Invalid algorithm type (1 or 2)")
