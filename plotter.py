@@ -29,10 +29,10 @@ def plotFromFile(filename: str, algType: int):
     graph.add_solution(sol)
 
     # plot
-    plot(graph)
+    plot(graph, algType)
 
 
-def plot(G: Graph):
+def plot(G: Graph, algType: int):
     # Create a graph
     nxG = nx.Graph()
 
@@ -61,8 +61,10 @@ def plot(G: Graph):
 
     # Draw the graph with node coordinates
     pos = nx.get_node_attributes(nxG, 'pos')
-    nx.draw(nxG, pos, with_labels=False, node_size=100000/(G.shape[0]*G.shape[1]), node_color=colors)
-    #nx.draw(nxG, with_labels=False, node_size=100000 / (G.shape[0] * G.shape[1]), node_color=colors)
+    if algType == 1:
+        nx.draw(nxG, pos, with_labels=False, node_size=100000/(G.shape[0]*G.shape[1]), node_color=colors)
+    else:
+        nx.draw(nxG, with_labels=False, node_size=100000 / (G.shape[0] * G.shape[1]), node_color=colors)
 
     # Show the plot
     plt.show()

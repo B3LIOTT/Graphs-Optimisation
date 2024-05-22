@@ -81,5 +81,5 @@ class Graph:
         Plot the graph
         """
         import plotter
-        plotter.plot(self)
+        plotter.plot(self, algType=1)
 
