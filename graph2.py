@@ -17,9 +17,7 @@ class Graph2:
         self.shape = ()
         self.edges_number = None
         self.nodes_number = None
-        self.s = None
-        self.t = None
-        self.shortest_path = []
+        self.best_path = []
 
         try:
             with open(filename, 'r') as f:
@@ -74,7 +72,7 @@ class Graph2:
         self.edges.remove(edge)
 
     def add_solution(self, path: [int]):
-        self.shortest_path = path
+        self.best_path = path
 
     def plot(self):
         """

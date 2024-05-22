@@ -2,6 +2,7 @@ from graph import Graph
 from graph2 import Graph2
 from sp_cplex import SHORT_PATH_CPLEX as SPC
 from a_star import A_STAR
+from greedy_solver import *
 import sys
 
 
@@ -23,6 +24,12 @@ def cplex_solve(G: Graph):
     save_res(f"cplex_{filename}", res[1])
 
 
+def brute_force_solve(G: Graph2):
+    bf = GreedySolver(G)
+    bf.solve()
+    print(bf.best_path)
+
+
 def save_res(filename: str, res):
     try:
         with open(f'solutions/sol_{filename}', 'w') as f:
@@ -37,15 +44,16 @@ if __name__ == '__main__':
     if len(sys.argv) != 4:
         print("Usage: python main.py <exercice> <alg type> <filename>")
         print("Exercices: 1=Shortest path, 2=Traveling salesman")
-        print("Alg types: 1=CPLEX, 2=A*")
+        print("Alg types:\n\tExercice 1: 1=CPLEX, 2=A*\n\tExercice 2: 1=CPLEX, 2=Brute force")
         print("Info: the file should be in the 'graphes' directory for Shortest path, or in 'graphes2' for Traveling salesman.")
         sys.exit(1)
 
     filename = sys.argv[3]
+    exercice = int(sys.argv[1])
 
-    if int(sys.argv[1]) == 1:
+    if exercice == 1:
         graph = Graph(f'graphes/{filename}')
-    elif int(sys.argv[1]) == 2:
+    elif exercice == 2:
         graph = Graph2(f'graphes2/{filename}')
     else:
         print("Exercice unknown (1 or 2)")
@@ -57,12 +65,20 @@ if __name__ == '__main__':
     algType = int(sys.argv[2])
 
     if algType == 1:
-        # Résolution du problème avec CPLEX
-        cplex_solve(graph)
+        if exercice == 1:
+            # Résolution du problème avec CPLEX
+            cplex_solve(graph)
+        else:
+            print("CPLEX not implemented for exercice 2")
+            sys.exit(1)
 
     elif algType == 2:
-        # Résolution du problème avec A*
-        a_star_solve(graph)
+        if exercice == 1:
+            # Résolution du problème avec A*
+            a_star_solve(graph)
+        else:
+            print("Brute force not implemented for exercice 2")
+            sys.exit(1)
 
     else:
         print("Invalid algorithm type (1 or 2)")
