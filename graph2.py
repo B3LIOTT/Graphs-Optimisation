@@ -1,3 +1,5 @@
+import sys
+
 from node import Node
 from math import sqrt
 
@@ -43,7 +45,7 @@ class Graph2:
                     else:
                         nodes_dict[i].add_neighbor(neighbor=j, distance=edge[2])
 
-                    if j not in [node.id for node in self.nodes]:
+                    if j not in nodes_dict:
                         current_node = Node(name=f"{j}", id=j, euclideanIndex=(j // shape, j % shape), nodeType=1, neighbors={})
                         current_node.add_neighbor(neighbor=i, distance=edge[2])
                         nodes_dict[j] = current_node
@@ -56,8 +58,10 @@ class Graph2:
 
         except ValueError:
             print("Invalid file format")
+            sys.exit(1)
         except FileNotFoundError:
             print(f"File {filename} not found")
+            sys.exit(1)
 
     def add_node(self, node: Node):
         self.nodes.append(node)

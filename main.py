@@ -1,6 +1,7 @@
 from graph import Graph
 from graph2 import Graph2
 from sp_cplex import SHORT_PATH_CPLEX as SPC
+from ts_cplex import TS_CPLEX
 from a_star import A_STAR
 from greedy_solver import *
 import sys
@@ -8,10 +9,12 @@ import sys
 
 def a_star_solve(G: Graph):
     a_star = A_STAR(G)
-    res = a_star.search()
-    if res is None:
-        print("No solution found")
+    try:
+        res = a_star.search()
+    except ValueError as e:
+        print('Error while solving: ', e)
         return
+
     res_str = [str(n) for n in res]
     G.add_solution(res_str)
     save_res(f"a-star_{filename}", res_str)
@@ -26,8 +29,20 @@ def cplex_solve(G: Graph):
 
 def brute_force_solve(G: Graph2):
     bf = GreedySolver(G)
-    bf.solve()
-    print(bf.best_path)
+    try:
+        path = bf.solve()
+    except ValueError as e:
+        print('Error while solving: ', e)
+        return
+    G.add_solution(path)
+
+
+def cplex_solve_2(G: Graph2):
+    tsp = TS_CPLEX(name='cplex_ts', G=G)
+    res = tsp.solve()
+    G.add_solution(res[1])
+    print(G.shortest_path)
+    #save_res(f"cplex_{filename}", res[1])
 
 
 def save_res(filename: str, res):

@@ -64,7 +64,7 @@ def plot(G: Graph, algType: int):
     if algType == 1:
         nx.draw(nxG, pos, with_labels=False, node_size=100000/(G.shape[0]*G.shape[1]), node_color=colors)
     else:
-        nx.draw(nxG, with_labels=False, node_size=100000 / (G.shape[0] * G.shape[1]), node_color=colors)
+        nx.draw(nxG, with_labels=True, node_size=100000 / (G.shape[0] * G.shape[1]), node_color=colors)
 
     # Show the plot
     plt.show()

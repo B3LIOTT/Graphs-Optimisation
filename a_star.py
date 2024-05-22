@@ -107,5 +107,4 @@ class A_STAR:
                     f[neighbor] = tentative_gScore + self.h(neighbor)
                     heapq.heappush(self.open_list, (f[neighbor], neighbor))
 
-        print("A*: FAILURE")
-        return None
+        raise ValueError("No solution found")

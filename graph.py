@@ -1,5 +1,6 @@
 from node import Node
 from math import sqrt
+import sys
 
 
 class Graph:
@@ -31,6 +32,7 @@ class Graph:
 
                 except ValueError:
                     print("Invalid file format")
+                    sys.exit(1)
 
                 # create the nodes
                 for i in range(self.shape[0]):
@@ -60,6 +62,7 @@ class Graph:
 
         except FileNotFoundError:
             print(f"File {filename} not found")
+            sys.exit(1)
 
     def add_node(self, node: Node):
         self.nodes.append(node)

@@ -35,8 +35,10 @@ def generateGraph2(proba: float, nodes_number: int, edges_number: int):
                 node2 = random.randint(0, nodes_number - 1)
                 while node1 == node2:
                     node2 = random.randint(0, nodes_number - 1)
-                cost = random.randint(1, 100)
-                f.write(f"{node1} {node2} {cost}\n")
+
+                if random.randint(0, 100) < proba*100:
+                    cost = random.randint(1, 100)
+                    f.write(f"{node1} {node2} {cost}\n")
 
     except Exception as e:
         print("Error while generating the graph: ", e)
