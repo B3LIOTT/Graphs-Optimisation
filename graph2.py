@@ -6,13 +6,12 @@ from math import sqrt
 
 class Graph2:
     """
-    Classe représentant un graphe (dans ce TP on considère des graphes non orientés)
+    Classe représentant un graphe pour le problème du voyageur de commerce (dans ce TP on considère des graphes non orientés)
     """
 
     def __init__(self, filename: str):
         """
         :param filename: nom du fichier contenant la description du graphe
-        :param graphType: type du graphe (1: graphe pour l'exercice 1, 2: graphe pour l'exercice 2)
         """
         self.nodes = []
         self.edges = []
